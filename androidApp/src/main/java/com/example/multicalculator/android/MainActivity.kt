@@ -58,8 +58,10 @@ fun CalcDisplay() {
 }
 
 @Composable
-fun CalcNumericButton() {
-
+fun CalcNumericButton(number: Int, display: MutableState<String>) {
+    ElevatedButton(modifier = Modifier.padding(4.dp),
+        onClick = {}) {
+    }
 }
 
 @Composable
@@ -73,7 +75,7 @@ fun CalcOperationButton(operation: String, display: MutableState<String>) {
 @Composable
 fun CalcEqualsButton(display: MutableState<String>) {
     ElevatedButton(modifier = Modifier.padding(4.dp),
-        onClick = {0}) {
+        onClick = { val display = 0 }) {
         Text(text = "=")
     }
 }
