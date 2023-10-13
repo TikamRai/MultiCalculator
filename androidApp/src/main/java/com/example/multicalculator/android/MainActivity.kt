@@ -4,11 +4,14 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -18,13 +21,10 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.multicalculator.Greeting
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.size
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.sp
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,8 +58,7 @@ fun DefaultPreview() {
 @Composable
 fun CalcView() {
     val displayText = remember { mutableStateOf("0") }
-    Surface(modifier = Modifier) {
-        Column(modifier = Modifier.background(Color.DarkGray).fillMaxHeight().fillMaxWidth()) {
+        Column(modifier = Modifier.background(Color.LightGray)) {
             Row() {
                 CalcDisplay(displayText)
             }
@@ -75,14 +74,13 @@ fun CalcView() {
                 }
                 Column() {
                     CalcOperationButton(operation = "+", display = displayText);
-                    CalcOperationButton(operation = "-", display = displayText);
+                    CalcOperationButton(operation = "–", display = displayText);
                     CalcOperationButton(operation = "x", display = displayText);
                     CalcOperationButton(operation = "÷", display = displayText);
                 }
             }
         }
     }
-}
 
 @Composable
 fun CalcRow(display: MutableState<String>, startNum: Int, numButtons: Int) {
@@ -96,33 +94,36 @@ fun CalcRow(display: MutableState<String>, startNum: Int, numButtons: Int) {
 
 @Composable
 fun CalcDisplay(display: MutableState<String>) {
-    Text(text = display.value,
+    Text(text = display.value, fontSize = 100.sp,
         modifier = Modifier
-            .height(50.dp)
+            .height(425.dp)
             .padding(5.dp)
             .fillMaxHeight())
 }
 
 @Composable
 fun CalcNumericButton(number: Int, display: MutableState<String>) {
-    ElevatedButton(modifier = Modifier.padding(11.dp).size(80.dp),
+    ElevatedButton(modifier = Modifier.padding(12.dp).size(80.dp),
+        shape = RoundedCornerShape(10.dp),
         onClick = {display.value += number.toString()}) {
-        Text(text = number.toString())
+        Text(text = number.toString(), fontSize = 40.sp)
     }
 }
 
 @Composable
 fun CalcOperationButton(operation: String, display: MutableState<String>) {
-    ElevatedButton(modifier = Modifier.padding(11.dp).size(80.dp),
+    ElevatedButton(modifier = Modifier.padding(12.dp).size(80.dp),
+        shape = RoundedCornerShape(10.dp),
         onClick = { /*TODO*/ }) {
-        Text(text = operation)
+        Text(text = operation, fontSize = 40.sp)
     }
 }
 
 @Composable
 fun CalcEqualsButton(display: MutableState<String>) {
-    ElevatedButton(modifier = Modifier.padding(11.dp).size(80.dp),
+    ElevatedButton(modifier = Modifier.padding(12.dp).size(80.dp),
+        shape = RoundedCornerShape(10.dp),
         onClick = { val display = 0 }) {
-        Text(text = "=")
+        Text(text = "=", fontSize = 40.sp)
     }
 }
