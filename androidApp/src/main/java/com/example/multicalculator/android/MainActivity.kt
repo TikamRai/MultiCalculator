@@ -22,6 +22,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -51,7 +52,7 @@ fun GreetingView(text: String) {
 @Composable
 fun DefaultPreview() {
     MyApplicationTheme {
-        GreetingView("Hello, Android!")
+        CalcView();
     }
 }
 
@@ -103,27 +104,27 @@ fun CalcDisplay(display: MutableState<String>) {
 
 @Composable
 fun CalcNumericButton(number: Int, display: MutableState<String>) {
-    ElevatedButton(modifier = Modifier.padding(12.dp).size(80.dp),
+    ElevatedButton(modifier = Modifier.padding(4.dp).size(95.dp),
         shape = RoundedCornerShape(10.dp),
         onClick = {display.value += number.toString()}) {
-        Text(text = number.toString(), fontSize = 40.sp)
+        Text(text = number.toString(), fontSize = 40.sp, fontWeight = FontWeight.ExtraBold)
     }
 }
 
 @Composable
 fun CalcOperationButton(operation: String, display: MutableState<String>) {
-    ElevatedButton(modifier = Modifier.padding(12.dp).size(80.dp),
+    ElevatedButton(modifier = Modifier.padding(4.dp).size(95.dp),
         shape = RoundedCornerShape(10.dp),
         onClick = { /*TODO*/ }) {
-        Text(text = operation, fontSize = 40.sp)
+        Text(text = operation, fontSize = 40.sp, fontWeight = FontWeight.ExtraBold)
     }
 }
 
 @Composable
 fun CalcEqualsButton(display: MutableState<String>) {
-    ElevatedButton(modifier = Modifier.padding(12.dp).size(80.dp),
+    ElevatedButton(modifier = Modifier.padding(4.dp).size(95.dp),
         shape = RoundedCornerShape(10.dp),
         onClick = { val display = 0 }) {
-        Text(text = "=", fontSize = 40.sp)
+        Text(text = "=", fontSize = 40.sp, fontWeight = FontWeight.ExtraBold)
     }
 }
