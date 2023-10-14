@@ -60,7 +60,7 @@ fun DefaultPreview() {
 fun CalcView() {
     val displayText = remember { mutableStateOf("0") }
         Column(modifier = Modifier.background(Color.LightGray)) {
-            Row() {
+            Row(modifier = Modifier.padding(10.dp)) {
                 CalcDisplay(displayText)
             }
             Row() {
@@ -95,16 +95,16 @@ fun CalcRow(display: MutableState<String>, startNum: Int, numButtons: Int) {
 
 @Composable
 fun CalcDisplay(display: MutableState<String>) {
-    Text(text = display.value, fontSize = 100.sp,
+    Text(text = display.value, fontSize = 20.sp,
         modifier = Modifier
-            .height(425.dp)
+            .height(50.dp)
             .padding(5.dp)
             .fillMaxHeight())
 }
 
 @Composable
 fun CalcNumericButton(number: Int, display: MutableState<String>) {
-    ElevatedButton(modifier = Modifier.padding(4.dp).size(95.dp),
+    ElevatedButton(modifier = Modifier.padding(4.dp).size(90.dp),
         shape = RoundedCornerShape(10.dp),
         onClick = {display.value += number.toString()}) {
         Text(text = number.toString(), fontSize = 40.sp, fontWeight = FontWeight.ExtraBold)
@@ -113,7 +113,7 @@ fun CalcNumericButton(number: Int, display: MutableState<String>) {
 
 @Composable
 fun CalcOperationButton(operation: String, display: MutableState<String>) {
-    ElevatedButton(modifier = Modifier.padding(4.dp).size(95.dp),
+    ElevatedButton(modifier = Modifier.padding(4.dp).size(90.dp),
         shape = RoundedCornerShape(10.dp),
         onClick = { /*TODO*/ }) {
         Text(text = operation, fontSize = 40.sp, fontWeight = FontWeight.ExtraBold)
@@ -122,7 +122,7 @@ fun CalcOperationButton(operation: String, display: MutableState<String>) {
 
 @Composable
 fun CalcEqualsButton(display: MutableState<String>) {
-    ElevatedButton(modifier = Modifier.padding(4.dp).size(95.dp),
+    ElevatedButton(modifier = Modifier.padding(4.dp).size(90.dp),
         shape = RoundedCornerShape(10.dp),
         onClick = { val display = 0 }) {
         Text(text = "=", fontSize = 40.sp, fontWeight = FontWeight.ExtraBold)
