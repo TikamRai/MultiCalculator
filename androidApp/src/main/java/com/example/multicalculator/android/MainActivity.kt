@@ -112,30 +112,30 @@ fun CalcView() {
         complete.value = false
     }
 
-        Column(modifier = Modifier.background(Color.LightGray)) {
-            Row(modifier = Modifier.padding(10.dp)) {
-                CalcDisplay(displayText)
+    Column(modifier = Modifier.background(Color.LightGray)) {
+        Row(modifier = Modifier.padding(10.dp)) {
+            CalcDisplay(displayText)
+        }
+        Row() {
+            Column() {
+                for (i in 7 downTo 1 step 3) {
+                    CalcRow(onPress = {number -> numberPress(number)}, i, 3)
+                }
+                Row() {
+                    CalcNumericButton(number = 0, onPress = {number -> numberPress(number)})
+                    CalcEqualsButton(onPress = {equalsPress()})
+                    CalcClrButton (onPress = { clearPress()})
+                }
             }
-            Row() {
-                Column() {
-                    for (i in 7 downTo 1 step 3) {
-                        CalcRow(onPress = {number -> numberPress(number)}, i, 3)
-                    }
-                    Row() {
-                        CalcNumericButton(number = 0, onPress = {number -> numberPress(number)})
-                        CalcEqualsButton(onPress = {equalsPress()})
-                        CalcClrButton (onPress = { clearPress()})
-                    }
-                }
-                Column() {
-                    CalcOperationButton(operation = "+", onPress = { operation -> operationPress(operation) });
-                    CalcOperationButton(operation = "–", onPress = { operation -> operationPress(operation) });
-                    CalcOperationButton(operation = "x", onPress = { operation -> operationPress(operation) });
-                    CalcOperationButton(operation = "÷", onPress = { operation -> operationPress(operation) });
-                }
+            Column() {
+                CalcOperationButton(operation = "+", onPress = { operation -> operationPress(operation) });
+                CalcOperationButton(operation = "–", onPress = { operation -> operationPress(operation) });
+                CalcOperationButton(operation = "x", onPress = { operation -> operationPress(operation) });
+                CalcOperationButton(operation = "÷", onPress = { operation -> operationPress(operation) });
             }
         }
     }
+}
 
 @Composable
 fun CalcRow(onPress: (number: Int) -> Unit, startNum: Int, numButtons: Int) {
