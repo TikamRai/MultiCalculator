@@ -59,27 +59,59 @@ fun DefaultPreview() {
 
 @Composable
 fun CalcView() {
+    var displayText = remember { mutableStateOf("0")}
     var leftNumber = rememberSaveable { mutableStateOf(0) }
     var rightNumber = rememberSaveable { mutableStateOf(0) }
     var operation = rememberSaveable { mutableStateOf("") }
     var complete = rememberSaveable { mutableStateOf(false) }
-    if (complete.value && operation.value !== "") {
+
+    if (complete.value && operation.value.isNotEmpty()) {
         var answer = 0
-        answer = when (operation.value) {
-            "+" -> leftNumber.value + rightNumber.value
-            "-" -> leftNumber.value - rightNumber.value
-            "*" -> leftNumber.value * rightNumber.value
-            "/" -> leftNumber.value / rightNumber.value
-            else -> 0
+        when (operation.value) {
+            "+" -> answer = leftNumber.value + rightNumber.value
+            "–" -> answer = leftNumber.value - rightNumber.value
+            "x" -> answer = leftNumber.value * rightNumber.value
+            "÷" -> answer = leftNumber.value / rightNumber.value
         }
-        var displayText = answer.toString()
-    } else if (!complete.value && operation.value !== "") {
-        var displayText = rightNumber.value
+        displayText.value = answer.toString()
+    } else if (operation.value.isNotEmpty() && !complete.value) {
+        displayText.value = rightNumber.value.toString()
     } else {
-        var displayText = leftNumber.value
+        displayText.value = leftNumber.value.toString()
     }
 
-    var displayText = remember { mutableStateOf("0") }
+    fun numberPress(btnNum: Int) {
+        if (complete.value) {
+            leftNumber.value = 0
+            rightNumber.value = 0
+            operation.value = ""
+            complete.value = false
+        }
+
+        if (operation.value.isNotEmpty() && !complete.value) {
+            rightNumber.value = (rightNumber.value * 10) + btnNum
+        } else if (operation.value.isEmpty() && !complete.value) {
+            leftNumber.value = (leftNumber.value * 10) + btnNum
+        }
+    }
+
+    fun operationPress(op: String) {
+        if (!complete.value) {
+            operation.value = op
+        }
+    }
+
+    fun equalsPress() {
+        complete.value = true
+    }
+
+    fun clearPress() {
+        leftNumber.value = 0
+        rightNumber.value = 0
+        operation.value = ""
+        complete.value = false
+    }
+
         Column(modifier = Modifier.background(Color.LightGray)) {
             Row(modifier = Modifier.padding(10.dp)) {
                 CalcDisplay(displayText)
@@ -87,71 +119,83 @@ fun CalcView() {
             Row() {
                 Column() {
                     for (i in 7 downTo 1 step 3) {
-                        CalcRow(displayText, i, 3)
+                        CalcRow(onPress = {number -> numberPress(number)}, i, 3)
                     }
                     Row() {
-                        CalcNumericButton(number = 0, display = displayText)
-                        CalcEqualsButton(displayText)
+                        CalcNumericButton(number = 0, onPress = {number -> numberPress(number)})
+                        CalcEqualsButton(onPress = {equalsPress()})
+                        CalcClrButton (onPress = { clearPress()})
                     }
                 }
                 Column() {
-                    CalcOperationButton(operation = "+", display = displayText);
-                    CalcOperationButton(operation = "–", display = displayText);
-                    CalcOperationButton(operation = "x", display = displayText);
-                    CalcOperationButton(operation = "÷", display = displayText);
+                    CalcOperationButton(operation = "+", onPress = { operation -> operationPress(operation) });
+                    CalcOperationButton(operation = "–", onPress = { operation -> operationPress(operation) });
+                    CalcOperationButton(operation = "x", onPress = { operation -> operationPress(operation) });
+                    CalcOperationButton(operation = "÷", onPress = { operation -> operationPress(operation) });
                 }
             }
         }
     }
 
 @Composable
-fun CalcRow(display: MutableState<String>, startNum: Int, numButtons: Int) {
+fun CalcRow(onPress: (number: Int) -> Unit, startNum: Int, numButtons: Int) {
     val endNum = startNum +numButtons;
     Row (modifier = Modifier.padding(0.dp)) {
         for (num in startNum until endNum){
-            CalcNumericButton(number = num, display = display)
+            CalcNumericButton(number = num, onPress = onPress)
         }
     }
 }
 
 @Composable
 fun CalcDisplay(display: MutableState<String>) {
-    Text(text = display.value, fontSize = 20.sp,
+    Text(text = display.value, fontSize = 60.sp,
         modifier = Modifier
-            .height(50.dp)
+            .height(410.dp)
             .padding(5.dp)
             .fillMaxHeight())
 }
 
 @Composable
-fun CalcNumericButton(number: Int, display: MutableState<String>) {
+fun CalcNumericButton(number: Int, onPress: (number: Int) -> Unit) {
     ElevatedButton(modifier = Modifier
         .padding(4.dp)
-        .size(90.dp),
+        .size(95.dp),
         shape = RoundedCornerShape(10.dp),
-        onClick = {display.value += number.toString()}) {
+        onClick = {onPress(number)}) {
         Text(text = number.toString(), fontSize = 40.sp, fontWeight = FontWeight.ExtraBold)
     }
 }
 
 @Composable
-fun CalcOperationButton(operation: String, display: MutableState<String>) {
+fun CalcOperationButton(operation: String, onPress: (operation: String) -> Unit) {
     ElevatedButton(modifier = Modifier
         .padding(4.dp)
-        .size(90.dp),
+        .size(95.dp),
         shape = RoundedCornerShape(10.dp),
-        onClick = { /*TODO*/ }) {
+        onClick = { onPress(operation)}) {
         Text(text = operation, fontSize = 40.sp, fontWeight = FontWeight.ExtraBold)
     }
 }
 
 @Composable
-fun CalcEqualsButton(display: MutableState<String>) {
+fun CalcEqualsButton(onPress: () -> Unit) {
     ElevatedButton(modifier = Modifier
         .padding(4.dp)
-        .size(90.dp),
+        .size(95.dp),
         shape = RoundedCornerShape(10.dp),
-        onClick = { val display = 0 }) {
+        onClick = { onPress() }) {
         Text(text = "=", fontSize = 40.sp, fontWeight = FontWeight.ExtraBold)
+    }
+}
+
+@Composable
+fun CalcClrButton(onPress: () -> Unit) {
+    ElevatedButton(modifier = Modifier
+        .padding(4.dp)
+        .size(95.dp),
+        shape = RoundedCornerShape(10.dp),
+        onClick = { onPress()}) {
+        Text(text = "C", fontSize = 40.sp, fontWeight = FontWeight.ExtraBold)
     }
 }
