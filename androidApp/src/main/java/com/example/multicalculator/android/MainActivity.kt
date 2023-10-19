@@ -63,7 +63,23 @@ fun CalcView() {
     var rightNumber = rememberSaveable { mutableStateOf(0) }
     var operation = rememberSaveable { mutableStateOf("") }
     var complete = rememberSaveable { mutableStateOf(false) }
-    val displayText = remember { mutableStateOf("0") }
+    if (complete.value && operation.value !== "") {
+        var answer = 0
+        answer = when (operation.value) {
+            "+" -> leftNumber.value + rightNumber.value
+            "-" -> leftNumber.value - rightNumber.value
+            "*" -> leftNumber.value * rightNumber.value
+            "/" -> leftNumber.value / rightNumber.value
+            else -> 0
+        }
+        var displayText = answer.toString()
+    } else if (!complete.value && operation.value !== "") {
+        var displayText = rightNumber.value
+    } else {
+        var displayText = leftNumber.value
+    }
+
+    var displayText = remember { mutableStateOf("0") }
         Column(modifier = Modifier.background(Color.LightGray)) {
             Row(modifier = Modifier.padding(10.dp)) {
                 CalcDisplay(displayText)
