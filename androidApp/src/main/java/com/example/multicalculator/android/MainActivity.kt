@@ -20,6 +20,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
@@ -58,6 +59,10 @@ fun DefaultPreview() {
 
 @Composable
 fun CalcView() {
+    var leftNumber = rememberSaveable { mutableStateOf(0) }
+    var rightNumber = rememberSaveable { mutableStateOf(0) }
+    var operation = rememberSaveable { mutableStateOf("") }
+    var complete = rememberSaveable { mutableStateOf(false) }
     val displayText = remember { mutableStateOf("0") }
         Column(modifier = Modifier.background(Color.LightGray)) {
             Row(modifier = Modifier.padding(10.dp)) {
@@ -104,7 +109,9 @@ fun CalcDisplay(display: MutableState<String>) {
 
 @Composable
 fun CalcNumericButton(number: Int, display: MutableState<String>) {
-    ElevatedButton(modifier = Modifier.padding(4.dp).size(90.dp),
+    ElevatedButton(modifier = Modifier
+        .padding(4.dp)
+        .size(90.dp),
         shape = RoundedCornerShape(10.dp),
         onClick = {display.value += number.toString()}) {
         Text(text = number.toString(), fontSize = 40.sp, fontWeight = FontWeight.ExtraBold)
@@ -113,7 +120,9 @@ fun CalcNumericButton(number: Int, display: MutableState<String>) {
 
 @Composable
 fun CalcOperationButton(operation: String, display: MutableState<String>) {
-    ElevatedButton(modifier = Modifier.padding(4.dp).size(90.dp),
+    ElevatedButton(modifier = Modifier
+        .padding(4.dp)
+        .size(90.dp),
         shape = RoundedCornerShape(10.dp),
         onClick = { /*TODO*/ }) {
         Text(text = operation, fontSize = 40.sp, fontWeight = FontWeight.ExtraBold)
@@ -122,7 +131,9 @@ fun CalcOperationButton(operation: String, display: MutableState<String>) {
 
 @Composable
 fun CalcEqualsButton(display: MutableState<String>) {
-    ElevatedButton(modifier = Modifier.padding(4.dp).size(90.dp),
+    ElevatedButton(modifier = Modifier
+        .padding(4.dp)
+        .size(90.dp),
         shape = RoundedCornerShape(10.dp),
         onClick = { val display = 0 }) {
         Text(text = "=", fontSize = 40.sp, fontWeight = FontWeight.ExtraBold)
